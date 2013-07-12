@@ -341,8 +341,8 @@ namespace SCP {
         }
 
         public bool UploadToSCP(MemoryStream ms, string filename) {
-            this.ProgressBar.Start(filename, ms.Length);
-            
+            this.ProgressBar.Start(filename, ms.Length); 
+            const_progressBar = this.ProgressBar;
             // create a temp file and write stream to it
             //using (TempFileCollection tempFile = new TempFileCollection()) {
                // tempFile.AddFile(filename, true);      
@@ -353,6 +353,10 @@ namespace SCP {
                 // create transfer
                 Console.Write("SCP: Host: " + scpHost + " USERNAME: " + scpUsername + "PW: " + scpPassword);
                 SshTransferProtocolBase scp = new Scp(scpHost, scpUsername, scpPassword);
+                
+                scp.OnTransferStart += new FileTransferEvent(sshCp_OnTransferStart);
+				scp.OnTransferProgress += new FileTransferEvent(sshCp_OnTransferProgress);
+				scp.OnTransferEnd += new FileTransferEvent(sshCp_OnTransferEnd);
                 
                 // connect
                 scp.Connect();
@@ -368,7 +372,29 @@ namespace SCP {
             return true;
         }
         
+        static cProgressBar const_progressBar;
 
+        private static void sshCp_OnTransferStart(string src, string dst, int transferredBytes, int totalBytes, string message)
+		{
+            const_progressBar.Set(transferredBytes);
+		}
+
+		private static void sshCp_OnTransferProgress(string src, string dst, int transferredBytes, int totalBytes, string message)
+		{
+			if(const_progressBar!=null)
+			{
+                const_progressBar.Set(transferredBytes);
+			}
+		}
+
+		private static void sshCp_OnTransferEnd(string src, string dst, int transferredBytes, int totalBytes, string message)
+		{
+			if(const_progressBar!=null)
+			{
+                const_progressBar.Set(transferredBytes);
+				const_progressBar=null;
+			}
+		}
 
         public void Upload() {
             if (Clipboard.ContainsImage())
