@@ -19,7 +19,8 @@ namespace SCP {
             textServer.Text = mainClass.scpHost;
             textUsername.Text = mainClass.scpUsername;
             textPassword.Text = mainClass.scpPassword;
-            textHttp.Text = mainClass.ftpHttp;
+            textPath.Text = mainClass.scpPath;
+            textHttp.Text = mainClass.scpHttp;
 
             int selIndex = 0;
             switch (mainClass.imageFormat.ToLower()) {
@@ -71,6 +72,7 @@ namespace SCP {
             mainClass.settings.SetString("Host", textServer.Text);
             mainClass.settings.SetString("Username", textUsername.Text);
             mainClass.settings.SetString("Password", mainClass.base64Encode(textPassword.Text));
+            mainClass.settings.SetString("Path", textPath.Text);
             mainClass.settings.SetString("Http", textHttp.Text);
 
             mainClass.settings.SetString("Format", comboFormat.Items[comboFormat.SelectedIndex].ToString());
@@ -126,6 +128,11 @@ namespace SCP {
         }
 
         private void checkPassive_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }

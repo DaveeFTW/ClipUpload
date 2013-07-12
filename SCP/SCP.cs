@@ -23,7 +23,8 @@ namespace SCP {
         public string scpHost = "";
         public string scpUsername = "";
         public string scpPassword = "";
-        public string ftpHttp = "";
+        public string scpPath = "";
+        public string scpHttp = "";
         public string imageFormat = "PNG";
         public bool useMD5 = false;
         public bool shortMD5 = false;
@@ -76,7 +77,8 @@ namespace SCP {
             scpHost = settings.GetString("Host");
             scpUsername = settings.GetString("Username");
             scpPassword = base64Decode(settings.GetString("Password"));
-            ftpHttp = settings.GetString("Http");
+            scpPath = settings.GetString("Path");
+            scpHttp = settings.GetString("Http");
 
             imageFormat = settings.GetString("Format");
 
@@ -98,7 +100,7 @@ namespace SCP {
         public Hashtable[] Menu() {
             List<Hashtable> ret = new List<Hashtable>();
 
-            if (scpHost != "" && scpUsername != "" && ftpHttp != "") {
+            if (scpHost != "" && scpUsername != "" && scpHttp != "") {
                 Hashtable DragItem = new Hashtable();
                 DragItem.Add("Visible", true);
                 DragItem.Add("Text", "Drag -> SCP");
@@ -199,7 +201,7 @@ namespace SCP {
 
             if (!canceled) {
                 if (result) {
-                    string url = ftpHttp + filename;
+                    string url = scpHttp + filename;
                     this.AddLog(url, img.Width + " x " + img.Height);
                     this.SetClipboardText(url);
                     Tray.ShowBalloonTip(1000, "Upload success!", "Image uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
@@ -243,7 +245,7 @@ namespace SCP {
 
             if (!canceled) {
                 if (result) {
-                    string url = ftpHttp + filename;
+                    string url = scpHttp + filename;
                     this.AddLog(url, (ms.Length / 1000) + " kB");
                     this.SetClipboardText(url);
                     Tray.ShowBalloonTip(1000, "Upload success!", "Animation uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
@@ -287,7 +289,7 @@ namespace SCP {
 
             if (!canceled) {
                 if (result) {
-                    string url = ftpHttp + filename;
+                    string url = scpHttp + filename;
                     this.AddLog(url, Text.Length + " characters");
                     this.SetClipboardText(url);
                     Tray.ShowBalloonTip(1000, "Upload success!", "Text uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
@@ -318,7 +320,7 @@ namespace SCP {
                     if (canceled)
                         break;
 
-                    string url = ftpHttp + Uri.EscapeDataString(filename);
+                    string url = scpHttp + Uri.EscapeDataString(filename);
                     this.AddLog(url, (new FileInfo(file).Length / 1000) + " kB");
 
                     finalCopy += url + "\n";
@@ -343,6 +345,9 @@ namespace SCP {
         public bool UploadToSCP(MemoryStream ms, string filename) {
             this.ProgressBar.Start(filename, ms.Length); 
             const_progressBar = this.ProgressBar;
+            
+            string dstFilename = scpPath + "/" + filename;
+            
             // create a temp file and write stream to it
             using (TempFileCollection tempFile = new TempFileCollection()) {
                 tempFile.AddFile(filename, false);      
@@ -361,10 +366,9 @@ namespace SCP {
                 scp.Connect();
 
                 // transfer file
-                scp.Put(filename, filename);
+                scp.Put(filename, dstFilename);
                 
                 this.ProgressBar.Done();
-
                 scp.Close();
             }
             

@@ -65,6 +65,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textPath = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numJpegCompressionFilesize)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -149,7 +151,7 @@
             // 
             // textHttp
             // 
-            this.textHttp.Location = new System.Drawing.Point(69, 91);
+            this.textHttp.Location = new System.Drawing.Point(69, 117);
             this.textHttp.Name = "textHttp";
             this.textHttp.Size = new System.Drawing.Size(219, 20);
             this.textHttp.TabIndex = 6;
@@ -157,7 +159,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(33, 97);
+            this.label6.Location = new System.Drawing.Point(33, 120);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 14;
@@ -190,7 +192,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 42);
+            this.label3.Location = new System.Drawing.Point(6, 42);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 13);
             this.label3.TabIndex = 13;
@@ -206,7 +208,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 16);
+            this.label2.Location = new System.Drawing.Point(31, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 12;
@@ -459,7 +461,7 @@
             this.groupBox3.Controls.Add(this.checkShortMD5);
             this.groupBox3.Controls.Add(this.numLength);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Location = new System.Drawing.Point(12, 145);
+            this.groupBox3.Location = new System.Drawing.Point(12, 167);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(299, 97);
             this.groupBox3.TabIndex = 1;
@@ -468,6 +470,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.textPath);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.textServer);
             this.groupBox4.Controls.Add(this.label3);
@@ -478,10 +482,28 @@
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Location = new System.Drawing.Point(12, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(299, 127);
+            this.groupBox4.Size = new System.Drawing.Size(299, 147);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Server";
+            // 
+            // textPath
+            // 
+            this.textPath.Location = new System.Drawing.Point(69, 91);
+            this.textPath.Name = "textPath";
+            this.textPath.Size = new System.Drawing.Size(219, 20);
+            this.textPath.TabIndex = 15;
+            this.textPath.UseSystemPasswordChar = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(31, 94);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Path:";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // FormSettings
             // 
@@ -553,5 +575,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textPath;
     }
 }
