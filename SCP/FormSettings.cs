@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace FTP {
+namespace SCP {
     public partial class FormSettings : Form {
         SCP mainClass;
 
@@ -16,12 +16,9 @@ namespace FTP {
 
             this.mainClass = mainClass;
 
-            textServer.Text = mainClass.ftpServer;
-            textUsername.Text = mainClass.ftpUsername;
-            textPassword.Text = mainClass.ftpPassword;
-            textPath.Text = mainClass.ftpPath;
-            checkPassive.Checked = mainClass.ftpPassive;
-            checkBinary.Checked = mainClass.ftpBinary;
+            textServer.Text = mainClass.scpHost;
+            textUsername.Text = mainClass.scpUsername;
+            textPassword.Text = mainClass.scpPassword;
             textHttp.Text = mainClass.ftpHttp;
 
             int selIndex = 0;
@@ -71,12 +68,9 @@ namespace FTP {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            mainClass.settings.SetString("Server", textServer.Text);
+            mainClass.settings.SetString("Host", textServer.Text);
             mainClass.settings.SetString("Username", textUsername.Text);
             mainClass.settings.SetString("Password", mainClass.base64Encode(textPassword.Text));
-            mainClass.settings.SetString("Path", textPath.Text);
-            mainClass.settings.SetBool("Passive", checkPassive.Checked);
-            mainClass.settings.SetBool("Binary", checkBinary.Checked);
             mainClass.settings.SetString("Http", textHttp.Text);
 
             mainClass.settings.SetString("Format", comboFormat.Items[comboFormat.SelectedIndex].ToString());
@@ -129,6 +123,11 @@ namespace FTP {
 
         private void button3_Click(object sender, EventArgs e) {
             MessageBox.Show("This turns the uploaded image into a Jpeg instead of the usual format selected on the left. If the resulting filesize is larger than X amount of KB, it will use the given compression rate.", "Jpeg compression", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void checkPassive_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -11,8 +11,7 @@ using System.IO;
 using System.Collections.Specialized;
 using AddonHelper;
 
-using System;
-using System.Collections;
+using System.CodeDom.Compiler;
 using Tamir.SharpSsh;
 
 namespace SCP {
@@ -21,12 +20,9 @@ namespace SCP {
 
         public NotifyIcon Tray;
 
-        public string ftpServer = "";
-        public string ftpUsername = "";
-        public string ftpPassword = "";
-        public string ftpPath = "";
-        public bool ftpPassive = false;
-        public bool ftpBinary = true;
+        public string scpHost = "";
+        public string scpUsername = "";
+        public string scpPassword = "";
         public string ftpHttp = "";
         public string imageFormat = "PNG";
         public bool useMD5 = false;
@@ -46,8 +42,8 @@ namespace SCP {
 
         public void Initialize(NotifyIcon Tray) {
             this.Tray = Tray;
-            this.settings = new Settings("Addons/FTP/settings.txt");
-            this.bmpIcon = new Icon("Addons/FTP/Icon.ico").ToBitmap();
+            this.settings = new Settings("Addons/SCP/settings.txt");
+            this.bmpIcon = new Icon("Addons/SCP/Icon.ico").ToBitmap();
 
             LoadSettings();
         }
@@ -77,12 +73,9 @@ namespace SCP {
                 settings.Save();
             }
 
-            ftpServer = settings.GetString("Server");
-            ftpUsername = settings.GetString("Username");
-            ftpPassword = base64Decode(settings.GetString("Password"));
-            ftpPath = settings.GetString("Path");
-            ftpPassive = settings.GetBool("Passive");
-            ftpBinary = settings.GetBool("Binary");
+            scpHost = settings.GetString("Host");
+            scpUsername = settings.GetString("Username");
+            scpPassword = base64Decode(settings.GetString("Password"));
             ftpHttp = settings.GetString("Http");
 
             imageFormat = settings.GetString("Format");
@@ -105,10 +98,10 @@ namespace SCP {
         public Hashtable[] Menu() {
             List<Hashtable> ret = new List<Hashtable>();
 
-            if (ftpServer != "" && ftpUsername != "" && ftpPath != "" && ftpHttp != "") {
+            if (scpHost != "" && scpUsername != "" && ftpHttp != "") {
                 Hashtable DragItem = new Hashtable();
                 DragItem.Add("Visible", true);
-                DragItem.Add("Text", "Drag -> FTP");
+                DragItem.Add("Text", "Drag -> SCP");
                 DragItem.Add("Image", this.bmpIcon);
                 DragItem.Add("Action", new Action(delegate { this.Drag(new Action<DragCallback>(DragCallback)); }));
                 DragItem.Add("ShortcutModifiers", this.shortCutDragModifiers);
@@ -117,7 +110,7 @@ namespace SCP {
 
                 Hashtable UpItem = new Hashtable();
                 UpItem.Add("Visible", Clipboard.ContainsImage() || Clipboard.ContainsFileDropList() || Clipboard.ContainsText());
-                UpItem.Add("Text", "FTP");
+                UpItem.Add("Text", "SCP");
                 UpItem.Add("Image", this.bmpIcon);
                 UpItem.Add("Action", new Action(Upload));
                 UpItem.Add("ShortcutModifiers", this.shortCutPasteModifiers);
@@ -146,7 +139,7 @@ namespace SCP {
 
         public void UploadImage(Image img) {
             Icon defIcon = (Icon)Tray.Icon.Clone();
-            Tray.Icon = new Icon("Addons/FTP/Icon.ico");
+            Tray.Icon = new Icon("Addons/SCP/Icon.ico");
 
             MemoryStream ms = new MemoryStream();
 
@@ -199,7 +192,7 @@ namespace SCP {
                 filename += "." + formatStr;
 
                 this.Backup(ms.GetBuffer(), filename);
-                canceled = !UploadToFTP(ms, filename);
+                canceled = !UploadToSCP(ms, filename);
 
                 result = true;
             } catch (Exception ex) { failReason = ex.Message; }
@@ -209,10 +202,10 @@ namespace SCP {
                     string url = ftpHttp + filename;
                     this.AddLog(url, img.Width + " x " + img.Height);
                     this.SetClipboardText(url);
-                    Tray.ShowBalloonTip(1000, "Upload success!", "Image uploaded to FTP and URL copied to clipboard.", ToolTipIcon.Info);
+                    Tray.ShowBalloonTip(1000, "Upload success!", "Image uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
                 } else {
                     this.ProgressBar.Done();
-                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your FTP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
+                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your SCP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
                 }
             }
 
@@ -223,7 +216,7 @@ namespace SCP {
 
         public void UploadAnimation(MemoryStream ms) {
             Icon defIcon = (Icon)Tray.Icon.Clone();
-            Tray.Icon = new Icon("Addons/FTP/Icon.ico");
+            Tray.Icon = new Icon("Addons/SCP/Icon.ico");
 
             bool result = false;
             string failReason = "";
@@ -241,7 +234,7 @@ namespace SCP {
 
                 filename += ".gif";
 
-                canceled = !UploadToFTP(ms, filename);
+                canceled = !UploadToSCP(ms, filename);
 
                 this.Backup(ms.GetBuffer(), filename);
 
@@ -253,10 +246,10 @@ namespace SCP {
                     string url = ftpHttp + filename;
                     this.AddLog(url, (ms.Length / 1000) + " kB");
                     this.SetClipboardText(url);
-                    Tray.ShowBalloonTip(1000, "Upload success!", "Animation uploaded to FTP and URL copied to clipboard.", ToolTipIcon.Info);
+                    Tray.ShowBalloonTip(1000, "Upload success!", "Animation uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
                 } else {
                     this.ProgressBar.Done();
-                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your FTP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
+                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your SCP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
                 }
             }
 
@@ -265,7 +258,7 @@ namespace SCP {
 
         public void UploadText(string Text) {
             Icon defIcon = (Icon)Tray.Icon.Clone();
-            Tray.Icon = new Icon("Addons/FTP/Icon.ico");
+            Tray.Icon = new Icon("Addons/SCP/Icon.ico");
 
             bool result = false;
             string failReason = "";
@@ -285,7 +278,7 @@ namespace SCP {
 
                 filename += ".txt";
 
-                canceled = !UploadToFTP(new MemoryStream(textData), filename);
+                canceled = !UploadToSCP(new MemoryStream(textData), filename);
 
                 this.Backup(textData, filename);
 
@@ -297,10 +290,10 @@ namespace SCP {
                     string url = ftpHttp + filename;
                     this.AddLog(url, Text.Length + " characters");
                     this.SetClipboardText(url);
-                    Tray.ShowBalloonTip(1000, "Upload success!", "Text uploaded to FTP and URL copied to clipboard.", ToolTipIcon.Info);
+                    Tray.ShowBalloonTip(1000, "Upload success!", "Text uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
                 } else {
                     this.ProgressBar.Done();
-                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your FTP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
+                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your SCP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
                 }
             }
 
@@ -309,7 +302,7 @@ namespace SCP {
 
         public void UploadFiles(StringCollection files) {
             Icon defIcon = (Icon)Tray.Icon.Clone();
-            Tray.Icon = new Icon("Addons/FTP/Icon.ico");
+            Tray.Icon = new Icon("Addons/SCP/Icon.ico");
 
             bool result = false;
             string failReason = "";
@@ -321,7 +314,7 @@ namespace SCP {
                 foreach (string file in files) {
                     string filename = file.Split('/', '\\').Last();
 
-                    canceled = !UploadToFTP(new MemoryStream(File.ReadAllBytes(file)), filename);
+                    canceled = !UploadToSCP(new MemoryStream(File.ReadAllBytes(file)), filename);
                     if (canceled)
                         break;
 
@@ -337,76 +330,45 @@ namespace SCP {
             if (!canceled) {
                 if (result) {
                     this.SetClipboardText(finalCopy.Substring(0, finalCopy.Length - 1));
-                    Tray.ShowBalloonTip(1000, "Upload success!", "File(s) uploaded to your FTP folder and URL(s) copied.", ToolTipIcon.Info);
+                    Tray.ShowBalloonTip(1000, "Upload success!", "File(s) uploaded to your SCP folder and URL(s) copied.", ToolTipIcon.Info);
                 } else {
                     this.ProgressBar.Done();
-                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your FTP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
+                    Tray.ShowBalloonTip(1000, "Upload failed!", "Something went wrong, probably on your SCP server. Try again.\nMessage: '" + failReason + "'", ToolTipIcon.Error);
                 }
             }
 
             Tray.Icon = defIcon;
         }
 
-        public bool UploadToFTP(MemoryStream ms, string filename) {
+        public bool UploadToSCP(MemoryStream ms, string filename) {
             this.ProgressBar.Start(filename, ms.Length);
+            
+            // create a temp file and write stream to it
+            //using (TempFileCollection tempFile = new TempFileCollection()) {
+               // tempFile.AddFile(filename, true);      
+                FileStream file = new FileStream(filename, FileMode.Create, System.IO.FileAccess.Write);
+                ms.WriteTo(file);
+                file.Close();
 
-            string strPath = ftpPath;
-            if (!strPath.EndsWith("/")) {
-                strPath += "/";
-            }
+                // create transfer
+                Console.Write("SCP: Host: " + scpHost + " USERNAME: " + scpUsername + "PW: " + scpPassword);
+                SshTransferProtocolBase scp = new Scp(scpHost, scpUsername, scpPassword);
+                
+                // connect
+                scp.Connect();
 
-            FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create("ftp://" + ftpServer + strPath + filename);
-            ftp.Proxy = null; //TODO: Ftp Proxy? (From SO: "If the specified proxy is an HTTP proxy, only the DownloadFile, ListDirectory, and ListDirectoryDetails commands are supported.")
-            ftp.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
-            ftp.Method = WebRequestMethods.Ftp.UploadFile;
-            ftp.UsePassive = ftpPassive;
-            ftp.UseBinary = ftpBinary;
+                // transfer file
+                scp.Put(filename, filename);
+                
+                this.ProgressBar.Done();
 
-            Stream stream = ftp.GetRequestStream();
-
-            int sr = 1024;
-            for (int i = 0; i < ms.Length; i += 1024) {
-                if (ms.Length - i < 1024)
-                    sr = (int)ms.Length - i;
-                else
-                    sr = 1024;
-
-                byte[] buffer = new byte[sr];
-                ms.Seek((long)i, SeekOrigin.Begin);
-                ms.Read(buffer, 0, sr);
-                stream.Write(buffer, 0, sr);
-
-                if (this.ProgressBar.Canceled) {
-                    // Remove the file from the server..
-                    //TODO: Make this a setting?
-                    FtpWebRequest ftpDelete = (FtpWebRequest)FtpWebRequest.Create("ftp://" + ftpServer + strPath + filename);
-                    ftpDelete.Proxy = null;
-                    ftpDelete.Method = WebRequestMethods.Ftp.DeleteFile;
-                    ftpDelete.Credentials = ftp.Credentials;
-                    ftpDelete.UsePassive = ftpPassive;
-                    ftpDelete.UseBinary = ftpBinary;
-                    ftpDelete.GetResponse();
-                    ftpDelete.Abort();
-
-                    ftp.Abort();
-                    ms.Dispose();
-
-                    ftp = null;
-                    ms = null;
-
-                    return false;
-                }
-                this.ProgressBar.Set(i);
-            }
-
-            stream.Close();
-            stream.Dispose();
-            ftp.Abort();
-
-            this.ProgressBar.Done();
-
+                scp.Close();
+          //  }
+            
             return true;
         }
+        
+
 
         public void Upload() {
             if (Clipboard.ContainsImage())

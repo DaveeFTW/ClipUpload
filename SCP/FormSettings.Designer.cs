@@ -1,4 +1,4 @@
-﻿namespace FTP
+﻿namespace SCP
 {
     partial class FormSettings
     {
@@ -36,9 +36,7 @@
             this.checkShortMD5 = new System.Windows.Forms.CheckBox();
             this.checkUseMD5 = new System.Windows.Forms.CheckBox();
             this.textHttp = new System.Windows.Forms.TextBox();
-            this.textPath = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.textPassword = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textUsername = new System.Windows.Forms.TextBox();
@@ -47,13 +45,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboFormat = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkPassive = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.checkDragModCtrl = new System.Windows.Forms.CheckBox();
             this.checkDragModAlt = new System.Windows.Forms.CheckBox();
             this.checkDragModShift = new System.Windows.Forms.CheckBox();
             this.comboDragKeys = new System.Windows.Forms.ComboBox();
-            this.checkBinary = new System.Windows.Forms.CheckBox();
             this.comboPasteKeys = new System.Windows.Forms.ComboBox();
             this.checkPasteModShift = new System.Windows.Forms.CheckBox();
             this.checkPasteModAlt = new System.Windows.Forms.CheckBox();
@@ -64,8 +60,8 @@
             this.numJpegCompressionFilesize = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.numJpegCompressionRate = new System.Windows.Forms.NumericUpDown();
             this.button3 = new System.Windows.Forms.Button();
+            this.numJpegCompressionRate = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -81,7 +77,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(396, 290);
+            this.button1.Location = new System.Drawing.Point(396, 274);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
@@ -92,7 +88,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(477, 290);
+            this.button2.Location = new System.Drawing.Point(477, 274);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -153,35 +149,19 @@
             // 
             // textHttp
             // 
-            this.textHttp.Location = new System.Drawing.Point(69, 163);
+            this.textHttp.Location = new System.Drawing.Point(69, 91);
             this.textHttp.Name = "textHttp";
             this.textHttp.Size = new System.Drawing.Size(219, 20);
             this.textHttp.TabIndex = 6;
             // 
-            // textPath
-            // 
-            this.textPath.Location = new System.Drawing.Point(69, 91);
-            this.textPath.Name = "textPath";
-            this.textPath.Size = new System.Drawing.Size(219, 20);
-            this.textPath.TabIndex = 3;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(33, 166);
+            this.label6.Location = new System.Drawing.Point(33, 97);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 14;
             this.label6.Text = "Http:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(31, 94);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Path:";
             // 
             // textPassword
             // 
@@ -228,9 +208,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(22, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
+            this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 12;
-            this.label2.Text = "Server:";
+            this.label2.Text = "Host:";
             // 
             // comboFormat
             // 
@@ -253,16 +233,6 @@
             this.label1.Size = new System.Drawing.Size(42, 13);
             this.label1.TabIndex = 8;
             this.label1.Text = "Format:";
-            // 
-            // checkPassive
-            // 
-            this.checkPassive.AutoSize = true;
-            this.checkPassive.Location = new System.Drawing.Point(69, 117);
-            this.checkPassive.Name = "checkPassive";
-            this.checkPassive.Size = new System.Drawing.Size(92, 17);
-            this.checkPassive.TabIndex = 4;
-            this.checkPassive.Text = "Passive mode";
-            this.checkPassive.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -316,16 +286,6 @@
             this.comboDragKeys.Name = "comboDragKeys";
             this.comboDragKeys.Size = new System.Drawing.Size(136, 21);
             this.comboDragKeys.TabIndex = 3;
-            // 
-            // checkBinary
-            // 
-            this.checkBinary.AutoSize = true;
-            this.checkBinary.Location = new System.Drawing.Point(69, 140);
-            this.checkBinary.Name = "checkBinary";
-            this.checkBinary.Size = new System.Drawing.Size(84, 17);
-            this.checkBinary.TabIndex = 5;
-            this.checkBinary.Text = "Binary mode";
-            this.checkBinary.UseVisualStyleBackColor = true;
             // 
             // comboPasteKeys
             // 
@@ -447,6 +407,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Image format";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(197, 46);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(31, 23);
+            this.button3.TabIndex = 36;
+            this.button3.Text = "?";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // numJpegCompressionRate
             // 
             this.numJpegCompressionRate.Location = new System.Drawing.Point(92, 95);
@@ -463,16 +433,6 @@
             0,
             0,
             0});
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(197, 46);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(31, 23);
-            this.button3.TabIndex = 36;
-            this.button3.Text = "?";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // groupBox2
             // 
@@ -499,7 +459,7 @@
             this.groupBox3.Controls.Add(this.checkShortMD5);
             this.groupBox3.Controls.Add(this.numLength);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Location = new System.Drawing.Point(12, 214);
+            this.groupBox3.Location = new System.Drawing.Point(12, 145);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(299, 97);
             this.groupBox3.TabIndex = 1;
@@ -512,17 +472,13 @@
             this.groupBox4.Controls.Add(this.textServer);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.textUsername);
-            this.groupBox4.Controls.Add(this.checkBinary);
             this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Controls.Add(this.checkPassive);
             this.groupBox4.Controls.Add(this.textPassword);
             this.groupBox4.Controls.Add(this.textHttp);
-            this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Controls.Add(this.textPath);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Location = new System.Drawing.Point(12, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(299, 196);
+            this.groupBox4.Size = new System.Drawing.Size(299, 127);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Server";
@@ -531,7 +487,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 324);
+            this.ClientSize = new System.Drawing.Size(564, 308);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -543,7 +499,7 @@
             this.MaximizeBox = false;
             this.Name = "FormSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FTP Settings";
+            this.Text = "SCP Settings";
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numJpegCompressionFilesize)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -568,9 +524,7 @@
         private System.Windows.Forms.CheckBox checkShortMD5;
         private System.Windows.Forms.CheckBox checkUseMD5;
         private System.Windows.Forms.TextBox textHttp;
-        private System.Windows.Forms.TextBox textPath;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textPassword;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textUsername;
@@ -579,13 +533,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboFormat;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox checkPassive;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox checkDragModCtrl;
         private System.Windows.Forms.CheckBox checkDragModAlt;
         private System.Windows.Forms.CheckBox checkDragModShift;
         private System.Windows.Forms.ComboBox comboDragKeys;
-        private System.Windows.Forms.CheckBox checkBinary;
         private System.Windows.Forms.ComboBox comboPasteKeys;
         private System.Windows.Forms.CheckBox checkPasteModShift;
         private System.Windows.Forms.CheckBox checkPasteModAlt;
