@@ -344,14 +344,13 @@ namespace SCP {
             this.ProgressBar.Start(filename, ms.Length); 
             const_progressBar = this.ProgressBar;
             // create a temp file and write stream to it
-            //using (TempFileCollection tempFile = new TempFileCollection()) {
-               // tempFile.AddFile(filename, true);      
+            using (TempFileCollection tempFile = new TempFileCollection()) {
+                tempFile.AddFile(filename, false);      
                 FileStream file = new FileStream(filename, FileMode.Create, System.IO.FileAccess.Write);
                 ms.WriteTo(file);
                 file.Close();
 
                 // create transfer
-                Console.Write("SCP: Host: " + scpHost + " USERNAME: " + scpUsername + "PW: " + scpPassword);
                 SshTransferProtocolBase scp = new Scp(scpHost, scpUsername, scpPassword);
                 
                 scp.OnTransferStart += new FileTransferEvent(sshCp_OnTransferStart);
@@ -367,7 +366,7 @@ namespace SCP {
                 this.ProgressBar.Done();
 
                 scp.Close();
-          //  }
+            }
             
             return true;
         }
