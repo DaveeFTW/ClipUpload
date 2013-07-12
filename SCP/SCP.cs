@@ -201,7 +201,12 @@ namespace SCP {
 
             if (!canceled) {
                 if (result) {
-                    string url = scpHttp + filename;
+                    string httpPath = scpHttp;
+                    if (!httpPath.EndsWith("/")) {
+                        httpPath += "/";
+                    }
+                    
+                    string url = httpPath + filename;
                     this.AddLog(url, img.Width + " x " + img.Height);
                     this.SetClipboardText(url);
                     Tray.ShowBalloonTip(1000, "Upload success!", "Image uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
@@ -245,7 +250,12 @@ namespace SCP {
 
             if (!canceled) {
                 if (result) {
-                    string url = scpHttp + filename;
+                    string httpPath = scpHttp;
+                    if (!httpPath.EndsWith("/")) {
+                        httpPath += "/";
+                    }
+                    
+                    string url = httpPath + filename;
                     this.AddLog(url, (ms.Length / 1000) + " kB");
                     this.SetClipboardText(url);
                     Tray.ShowBalloonTip(1000, "Upload success!", "Animation uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
@@ -289,7 +299,12 @@ namespace SCP {
 
             if (!canceled) {
                 if (result) {
-                    string url = scpHttp + filename;
+                    string httpPath = scpHttp;
+                    if (!httpPath.EndsWith("/")) {
+                        httpPath += "/";
+                    }
+                    
+                    string url = httpPath + filename;
                     this.AddLog(url, Text.Length + " characters");
                     this.SetClipboardText(url);
                     Tray.ShowBalloonTip(1000, "Upload success!", "Text uploaded to SCP and URL copied to clipboard.", ToolTipIcon.Info);
@@ -320,7 +335,12 @@ namespace SCP {
                     if (canceled)
                         break;
 
-                    string url = scpHttp + Uri.EscapeDataString(filename);
+                    string httpPath = scpHttp;
+                    if (!httpPath.EndsWith("/")) {
+                        httpPath += "/";
+                    }
+                    
+                    string url = httpPath + Uri.EscapeDataString(filename);
                     this.AddLog(url, (new FileInfo(file).Length / 1000) + " kB");
 
                     finalCopy += url + "\n";
