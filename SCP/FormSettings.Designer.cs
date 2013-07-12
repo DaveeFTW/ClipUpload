@@ -65,8 +65,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textPath = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.textPath = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numJpegCompressionFilesize)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -487,14 +487,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Server";
             // 
-            // textPath
-            // 
-            this.textPath.Location = new System.Drawing.Point(69, 91);
-            this.textPath.Name = "textPath";
-            this.textPath.Size = new System.Drawing.Size(219, 20);
-            this.textPath.TabIndex = 15;
-            this.textPath.UseSystemPasswordChar = true;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -504,6 +496,13 @@
             this.label5.TabIndex = 16;
             this.label5.Text = "Path:";
             this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // textPath
+            // 
+            this.textPath.Location = new System.Drawing.Point(69, 91);
+            this.textPath.Name = "textPath";
+            this.textPath.Size = new System.Drawing.Size(219, 20);
+            this.textPath.TabIndex = 15;
             // 
             // FormSettings
             // 
